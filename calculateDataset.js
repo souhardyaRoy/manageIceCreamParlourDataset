@@ -121,43 +121,33 @@ const calculateMostRevenueItems = (dataSetArr) => {
 };
 
 const calculateMinMaxAvgOrdersForPopularItems = (dataSetArr) => {
-    // Find the most popular items for each month
     const mostPopularItems = calculateMostPopularItems(dataSetArr);
 
-    // Create an object to store order quantities for the most popular items
     let itemOrders = {};
 
-    // Loop through the dataset to gather order quantities for the most popular items
     for (let i = 0; i < dataSetArr.length; i++) {
         let rowData = dataSetArr[i];
         let month = formatMonth(rowData["Date"]);
         let item = rowData["SKU"];
         let quantity = parseInt(rowData["Quantity"]);
 
-        // Check if the item is the most popular item for the month
         if (mostPopularItems[month] && mostPopularItems[month].item === item) {
-            // Initialize the array for this month if it doesn't exist
             if (!itemOrders[month]) {
                 itemOrders[month] = [];
             }
-            // Add the quantity to the list for this month
             itemOrders[month].push(quantity);
         }
     }
 
-    // Create an object to store the min, max, and average orders for each month
     let results = {};
 
-    // Loop through each month to calculate the min, max, and average orders
     for (let month in itemOrders) {
         let quantities = itemOrders[month];
         
-        // Initialize min, max, and sum
         let minOrders = quantities[0];
         let maxOrders = quantities[0];
         let sumOrders = 0;
 
-        // Loop through quantities to find min, max, and calculate the sum
         for (let j = 0; j < quantities.length; j++) {
             let quantity = quantities[j];
             
@@ -172,10 +162,8 @@ const calculateMinMaxAvgOrdersForPopularItems = (dataSetArr) => {
             sumOrders += quantity;
         }
 
-        // Calculate average
         let avgOrders = sumOrders / quantities.length;
 
-        // Store the results for this month
         results[month] = {
             minOrders,
             maxOrders,
